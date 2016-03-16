@@ -7,48 +7,57 @@ newtype Z = Z Double
 data Point = Point (X,Y,Z)
 data Vector = Vector (X,Y,Z)
 
+_addTuple :: (X,Y,Z) -> (X,Y,Z) -> (X,Y,Z)
+_addTuple (a,b,c) (d,e,f) = (a + b, c + d, e + f)
+
+_subTuple :: (X,Y,Z) -> (X,Y,Z) -> (X,Y,Z)
+_subTuple (a,b,c) (d,e,f) = (a - b, c - d, e - f)
+
+_mulTuple :: (X,Y,Z) -> (X,Y,Z) -> (X,Y,Z)
+_mulTuple (a,b,c) (d,e,f) = (a * b, c * d, e * f)
+
 addVectorToPoint :: Point -> Vector -> Point
-addVectorToPoint (Point (a,b,c)) (Vector (d,e,f)) =
-  Point (a + d, b + e, c + f)
+addVectorToPoint (Point p) (Vector v) =
+  Point $ _addTuple p v
 
 subtractVectorFromPoint :: Point -> Vector -> Point
-subtractVectorFromPoint (Point (a,b,c)) (Vector (d,e,f)) =
-  Point (a - d, b - e, c - f)
+subtractVectorFromPoint (Point p) (Vector v) =
+  Point $ _subTuple p v
 
 subtractPointFromPoint :: Point -> Point -> Vector
-subtractPointFromPoint (Point (a,b,c)) (Vector (d,e,f)) =
-  Vector (a - d, b - e, c - f)
+subtractPointFromPoint (Point p) (Vector v) =
+  Vector $ _subTuple p v
 
 addVectorToVector :: Vector -> Vector -> Vector
-addVectorToVector (Vector (a,b,c)) (Vector (d,e,f)) =
-  Vector (a + d, b + e, c + f)
+addVectorToVector (Vector v1) (Vector v2) =
+  Vector $ _addTuple v1 v2
 
 subtractVectorFromVector :: Vector -> Vector -> Vector
-subtractVectorFromVector (Vector (a,b,c)) (Vector (d,e,f)) =
-  Vector (a - d, b - e, c - f)
+subtractVectorFromVector (Vector v1) (Vector v2) =
+  Vector $ _subTuple v1 v2
 
 drawPoint :: Point -> IO ()
 drawPoint = print
 
-rotatePointXY :: Point -> Degrees -> Point
-rotatePointXY (Point (a,b,c)) d =
-	Point (
+rotateVectorXY :: Vector -> Degrees -> Vector
+rotateVectorXY (Vector (a,b,c)) d =
+	Vector (
 		(cos d * a) + ((negate $ sin d) * a),
 		(sin d * b) + (cos d * b),
 		c
 	)
 
-rotatePointXZ :: Point -> Degrees -> Point
-rotatePointXZ (Point (a,b,c)) d =
-	Point (
+rotateVectorXZ :: Vector -> Degrees -> Vector
+rotateVectorXZ (Vector (a,b,c)) d =
+	Vector (
 		(cos d * a) + (sin d * a),
 		b,
 		((negate $ sin d) * c) + (cos d * c)
 	)
 
-rotatePointYZ :: Point -> Degrees -> Point
-rotatePointYZ (Point (a,b,c)) d =
-	Point (
+rotateVectorYZ :: Vector -> Degrees -> Vector
+rotateVectorYZ (Vector (a,b,c)) d =
+	Vector (
 		a,
 	  	(cos d * b) + ((negate $ sin d) * b),
 	  	(sin d * c) + (cos d * c)
